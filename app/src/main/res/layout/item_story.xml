@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_double_line"
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/padding_md"
+    android:paddingStart="@dimen/padding_md">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:paddingTop="@dimen/text_padding"
+        android:maxLines="1"
+        tools:text="Map versus flatMap" />
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:paddingBottom="@dimen/text_padding"
+        tools:text="By Some_guy" />
+
+
+</FrameLayout>
