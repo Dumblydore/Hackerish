@@ -1,4 +1,4 @@
-package me.mauricee.hackerish.main.stories
+package me.mauricee.hackerish.main.comments
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import io.reactivex.subjects.PublishSubject
 import me.mauricee.hackerish.R
 import me.mauricee.hackerish.model.Item
 
-class ItemAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
+internal class CommentsAdapter(private val items: List<Item>) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
 
     private val itemSubject: PublishSubject<Item> = PublishSubject.create()
     val selectedItems: Observable<Item>
@@ -23,13 +23,13 @@ class ItemAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemAdap
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.title.text = item.title
+        holder.title.text = item.text
         holder.subtitle.text = "by ${item.by}"
         RxView.clicks(holder.itemView).subscribe { itemSubject.onNext(item) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_story, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_comment, parent, false)
         return ViewHolder(view)
     }
 

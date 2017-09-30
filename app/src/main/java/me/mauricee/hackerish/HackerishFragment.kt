@@ -18,8 +18,10 @@ abstract class HackerishFragment<VM : ViewModel> : Fragment(), HasSupportFragmen
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
+        retainInstance = true
         super.onAttach(context)
     }
+
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return childFragmentInjector

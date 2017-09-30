@@ -2,6 +2,8 @@ package me.mauricee.hackerish.inject
 
 import android.app.Application
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.nytimes.android.external.store3.base.impl.Store
 import com.nytimes.android.external.store3.base.impl.StoreBuilder
 import dagger.Module
@@ -32,10 +34,16 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(client: OkHttpClient): Retrofit {
+    fun provideGson(): Gson {
+        return GsonBuilder().disableHtmlEscaping().create()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(client: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .baseUrl("https://hacker-news.firebaseio.com")
                 .build()
@@ -49,9 +57,9 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideHackerNewsStore(hackerNewsApi: HackerNewsApi) : Store<Item, Int>{
+    fun provideHackerNewsStore(hackerNewsApi: HackerNewsApi): Store<Item, Int> {
         return StoreBuilder.key<Int, Item>()
-                .fetcher{ hackerNewsApi.getItem(it)}
+                .fetcher { hackerNewsApi.getItem(it) }
                 .open()
     }
 
