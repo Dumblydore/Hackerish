@@ -33,7 +33,7 @@ internal class NewStoriesFragment : HackerishFragment<StoriesViewModel>() {
         super.onStart()
         val stories = mutableListOf<Item>()
         storyList.layoutManager = LinearLayoutManager(context)
-        val adapter = StoriesAdapter(stories)
+        val adapter = StoriesAdapter(stories, picasso)
         storyList.adapter = adapter
         viewModel.newStories.subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
         adapter.selectedItems.subscribe(viewModel::select)

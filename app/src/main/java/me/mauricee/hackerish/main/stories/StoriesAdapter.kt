@@ -4,14 +4,16 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.jakewharton.rxbinding2.view.RxView
+import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import me.mauricee.hackerish.R
 import me.mauricee.hackerish.model.Item
 
-internal class StoriesAdapter(private val items: List<Item>) : RecyclerView.Adapter<StoriesAdapter.ViewHolder>() {
+internal class StoriesAdapter(private val items: List<Item>, private val picasso: Picasso) : RecyclerView.Adapter<StoriesAdapter.ViewHolder>() {
 
     private val itemSubject: PublishSubject<Item> = PublishSubject.create()
     val selectedItems: Observable<Item>
@@ -25,6 +27,12 @@ internal class StoriesAdapter(private val items: List<Item>) : RecyclerView.Adap
         val item = items[position]
         holder.title.text = item.title
         holder.subtitle.text = "by ${item.by}"
+
+        picasso.load(item.icon)
+                .error(R.drawable.ic_launcher_background)
+                .fit()
+                .into(holder.icon)
+
         RxView.clicks(holder.itemView).subscribe { itemSubject.onNext(item) }
     }
 
@@ -39,5 +47,7 @@ internal class StoriesAdapter(private val items: List<Item>) : RecyclerView.Adap
             get() = itemView.findViewById(R.id.title)
         val subtitle: TextView
             get() = itemView.findViewById(R.id.subtitle)
+        val icon: ImageView
+            get() = itemView.findViewById(R.id.icon)
     }
 }

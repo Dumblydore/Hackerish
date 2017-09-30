@@ -1,11 +1,7 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-kapt {
-    generateStubs = true
-}
+apply plugin: 'kotlin-kapt'
 
 
 android {
@@ -70,15 +66,18 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
 
 //    Networking
+    implementation 'org.jsoup:jsoup:1.10.3'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.squareup.okhttp3:okhttp:3.9.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 
-    compile 'com.nytimes.android:cache3:3.0.0-beta'
-    compile 'com.nytimes.android:store3:3.0.0-beta'
-    compile 'com.nytimes.android:store-kotlin3:3.0.0-beta'
+    implementation 'com.nytimes.android:cache3:3.0.0-beta'
+    implementation 'com.nytimes.android:store3:3.0.0-beta'
+    implementation 'com.nytimes.android:store-kotlin3:3.0.0-beta'
 
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'

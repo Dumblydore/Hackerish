@@ -4,12 +4,11 @@ import android.app.Application
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.nytimes.android.external.store3.base.impl.Store
-import com.nytimes.android.external.store3.base.impl.StoreBuilder
+import com.jakewharton.picasso.OkHttp3Downloader
+import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import me.mauricee.hackerish.model.HackerNewsApi
-import me.mauricee.hackerish.model.Item
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -57,11 +56,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideHackerNewsStore(hackerNewsApi: HackerNewsApi): Store<Item, Int> {
-        return StoreBuilder.key<Int, Item>()
-                .fetcher { hackerNewsApi.getItem(it) }
-                .open()
+    fun providePicasso(client: OkHttpClient, context: Context): Picasso {
+        return Picasso.Builder(context).downloader(OkHttp3Downloader(client))
+                .build()
     }
-
-
 }

@@ -14,14 +14,14 @@ data class Item(
         @SerializedName("parent") val parent: Int,
         @SerializedName("poll") val poll: Int,
         @SerializedName("kids") val kids: List<Int>,
-        @SerializedName("url") val urlString: String,
+        @SerializedName("url") val urlString: String?,
         @SerializedName("score") val score: Int,
         @SerializedName("title") val title: String,
         @SerializedName("parts") val parts: List<Int>,
         @SerializedName("descendants") val descendants: Int
 ) {
     val url
-        get() = Uri.parse(urlString)
+        get() = if (urlString != null) Uri.parse(urlString) else Uri.EMPTY
 
     val type: Type
         get() {
@@ -42,4 +42,6 @@ data class Item(
         poll,
         pollopt
     }
+
+    lateinit var icon: Uri
 }

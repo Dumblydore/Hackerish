@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
 import android.support.v4.app.Fragment
+import com.squareup.picasso.Picasso
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
@@ -15,8 +16,15 @@ abstract class HackerishFragment<VM : ViewModel> : Fragment(), HasSupportFragmen
 
     internal val subscriptions = CompositeDisposable()
     @Inject lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
-        protected lateinit var viewModel: VM
+    protected lateinit var viewModel: VM
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    //    @Inject lateinit var picasso: Picasso
+    val picasso: Picasso
+        get() {
+            val p = Picasso.with(activity)
+            p.isLoggingEnabled = true
+            return p
+        }
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
