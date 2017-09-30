@@ -1,4 +1,4 @@
-package me.mauricee.hackerish.main.stories
+package me.mauricee.hackerish.main.stories.fragment
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -10,9 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import me.mauricee.hackerish.HackerishFragment
 import me.mauricee.hackerish.R
+import me.mauricee.hackerish.main.stories.StoriesAdapter
+import me.mauricee.hackerish.main.stories.StoriesViewModel
 import me.mauricee.hackerish.model.Item
 
-internal class StoriesFragment : HackerishFragment<StoriesViewModel>() {
+internal class NewStoriesFragment : HackerishFragment<StoriesViewModel>() {
 
     private val storyList: RecyclerView
         get() = view!!.findViewById(R.id.story_list)
@@ -33,7 +35,7 @@ internal class StoriesFragment : HackerishFragment<StoriesViewModel>() {
         storyList.layoutManager = LinearLayoutManager(context)
         val adapter = StoriesAdapter(stories)
         storyList.adapter = adapter
-        viewModel.items.subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
+        viewModel.newStories.subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
         adapter.selectedItems.subscribe(viewModel::select)
     }
 }
