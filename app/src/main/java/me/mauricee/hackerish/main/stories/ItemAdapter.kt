@@ -1,4 +1,4 @@
-package me.mauricee.hackerish.ui.stories
+package me.mauricee.hackerish.main.stories
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
