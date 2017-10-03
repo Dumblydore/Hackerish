@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import me.mauricee.hackerish.R
-import me.mauricee.hackerish.model.Item
+import me.mauricee.hackerish.domain.hackerNews.Item
 
 internal class StoriesAdapter(private val items: List<Item>, private val picasso: Picasso) : RecyclerView.Adapter<StoriesAdapter.ViewHolder>() {
 

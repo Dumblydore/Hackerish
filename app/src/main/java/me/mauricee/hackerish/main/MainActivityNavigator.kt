@@ -1,6 +1,6 @@
 package me.mauricee.hackerish.main
 
-import me.mauricee.hackerish.model.Item
+import me.mauricee.hackerish.domain.hackerNews.Item
 
 interface MainActivityNavigator {
 

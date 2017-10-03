@@ -4,8 +4,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import me.mauricee.hackerish.HackerishViewModel
-import me.mauricee.hackerish.model.HackerNewsApi
-import me.mauricee.hackerish.model.Item
+import me.mauricee.hackerish.domain.hackerNews.HackerNewsApi
+import me.mauricee.hackerish.domain.hackerNews.Item
 import javax.inject.Inject
 
 class CommentsViewModel @Inject constructor(private val api: HackerNewsApi) : HackerishViewModel() {

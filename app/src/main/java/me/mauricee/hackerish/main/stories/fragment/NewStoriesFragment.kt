@@ -12,7 +12,7 @@ import me.mauricee.hackerish.HackerishFragment
 import me.mauricee.hackerish.R
 import me.mauricee.hackerish.main.stories.StoriesAdapter
 import me.mauricee.hackerish.main.stories.StoriesViewModel
-import me.mauricee.hackerish.model.Item
+import me.mauricee.hackerish.domain.hackerNews.Item
 
 internal class NewStoriesFragment : HackerishFragment<StoriesViewModel>() {
 

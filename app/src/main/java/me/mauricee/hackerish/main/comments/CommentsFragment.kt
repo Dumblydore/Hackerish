@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import me.mauricee.hackerish.HackerishFragment
 import me.mauricee.hackerish.R
-import me.mauricee.hackerish.model.Item
+import me.mauricee.hackerish.domain.hackerNews.Item
 
 internal class CommentsFragment : HackerishFragment<CommentsViewModel>() {
 

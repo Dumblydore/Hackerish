@@ -10,7 +10,7 @@ import me.mauricee.hackerish.ext.put
 import me.mauricee.hackerish.main.comments.CommentsFragment
 import me.mauricee.hackerish.main.stories.fragment.NewStoriesFragment
 import me.mauricee.hackerish.main.stories.fragment.TopStoriesFragment
-import me.mauricee.hackerish.model.Item
+import me.mauricee.hackerish.domain.hackerNews.Item
 
 class MainActivity : HackerishActivity(), MainActivityNavigator {
 

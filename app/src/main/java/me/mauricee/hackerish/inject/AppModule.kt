@@ -8,7 +8,7 @@ import com.jakewharton.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
-import me.mauricee.hackerish.model.HackerNewsApi
+import me.mauricee.hackerish.domain.hackerNews.HackerNewsApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory

@@ -10,7 +10,7 @@ import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import me.mauricee.hackerish.R
-import me.mauricee.hackerish.model.Item
+import me.mauricee.hackerish.domain.hackerNews.Item
 
 internal class CommentsAdapter(private val items: List<Item>) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
 

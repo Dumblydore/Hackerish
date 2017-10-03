@@ -8,8 +8,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import me.mauricee.hackerish.HackerishViewModel
 import me.mauricee.hackerish.main.MainActivityNavigator
-import me.mauricee.hackerish.model.HackerNewsApi
-import me.mauricee.hackerish.model.Item
+import me.mauricee.hackerish.domain.hackerNews.HackerNewsApi
+import me.mauricee.hackerish.domain.hackerNews.Item
 import me.mauricee.hackerish.util.RxResponseCallback
 import okhttp3.OkHttpClient
 import okhttp3.Request
