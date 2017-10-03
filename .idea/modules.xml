@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Hackerish.iml" filepath="$PROJECT_DIR$/.idea/Hackerish.iml" />
       <module fileurl="file://$PROJECT_DIR$/Hackerish.iml" filepath="$PROJECT_DIR$/Hackerish.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

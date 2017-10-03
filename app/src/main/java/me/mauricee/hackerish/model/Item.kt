@@ -18,7 +18,7 @@ data class Item(
         @SerializedName("score") val score: Int,
         @SerializedName("title") val title: String,
         @SerializedName("parts") val parts: List<Int>,
-        @SerializedName("descendants") val descendants: Int
+        @SerializedName("descendants") val descendants: List<Int>
 ) {
     val url
         get() = if (urlString != null) Uri.parse(urlString) else Uri.EMPTY

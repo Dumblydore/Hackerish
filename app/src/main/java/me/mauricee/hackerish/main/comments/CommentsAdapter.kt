@@ -1,5 +1,6 @@
 package me.mauricee.hackerish.main.comments
 
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,8 @@ import me.mauricee.hackerish.model.Item
 internal class CommentsAdapter(private val items: List<Item>) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
 
     private val itemSubject: PublishSubject<Item> = PublishSubject.create()
+    private val viewPool = RecyclerView.RecycledViewPool()
+
     val selectedItems: Observable<Item>
         get() = itemSubject
 
@@ -26,6 +29,13 @@ internal class CommentsAdapter(private val items: List<Item>) : RecyclerView.Ada
         holder.title.text = item.text
         holder.subtitle.text = "by ${item.by}"
         RxView.clicks(holder.itemView).subscribe { itemSubject.onNext(item) }
+        holder.replies.recycledViewPool = viewPool
+
+        if (item.descendants.isNotEmpty()) {
+            holder.replies.layoutManager = LinearLayoutManager(holder.itemView.context)
+//            holder.replies.adapter = RepliesAdapter()
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,5 +49,7 @@ internal class CommentsAdapter(private val items: List<Item>) : RecyclerView.Ada
             get() = itemView.findViewById(R.id.title)
         val subtitle: TextView
             get() = itemView.findViewById(R.id.subtitle)
+        val replies: RecyclerView
+            get() = itemView.findViewById(R.id.replies)
     }
 }

@@ -15,8 +15,14 @@ import me.mauricee.hackerish.model.Item
 
 internal class CommentsFragment : HackerishFragment<CommentsViewModel>() {
 
+    companion object {
+        val KEY = "${CommentsFragment::class.java.simpleName}.selectedItem"
+    }
+
     private val storyList: RecyclerView
         get() = view!!.findViewById(R.id.story_list)
+
+    private var selectedItem: Int = -1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -30,12 +36,13 @@ internal class CommentsFragment : HackerishFragment<CommentsViewModel>() {
 
     override fun onStart() {
         super.onStart()
+        arguments.getInt(KEY, selectedItem)
         Log.d(javaClass.simpleName, "stared")
         val stories = mutableListOf<Item>()
         storyList.layoutManager = LinearLayoutManager(context)
         val adapter = CommentsAdapter(stories)
         storyList.adapter = adapter
-        viewModel.comments.subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
-//        adapter.selectedItems.subscribe(viewModel::select)
+        viewModel.comments(selectedItem)
+                .subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
     }
 }
