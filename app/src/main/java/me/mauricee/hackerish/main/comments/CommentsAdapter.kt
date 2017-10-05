@@ -11,13 +11,14 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import me.mauricee.hackerish.R
 import me.mauricee.hackerish.domain.hackerNews.Item
+import me.mauricee.hackerish.model.Comment
 
-internal class CommentsAdapter(private val items: List<Item>) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
+internal class CommentsAdapter(private val items: List<Comment>) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
 
-    private val itemSubject: PublishSubject<Item> = PublishSubject.create()
+    private val itemSubject: PublishSubject<Comment> = PublishSubject.create()
     private val viewPool = RecyclerView.RecycledViewPool()
 
-    val selectedItems: Observable<Item>
+    val selectedItems: Observable<Comment>
         get() = itemSubject
 
     override fun getItemCount(): Int {
@@ -27,13 +28,13 @@ internal class CommentsAdapter(private val items: List<Item>) : RecyclerView.Ada
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         holder.title.text = item.text
-        holder.subtitle.text = "by ${item.by}"
+        holder.subtitle.text = "by ${item.author}"
         RxView.clicks(holder.itemView).subscribe { itemSubject.onNext(item) }
-        holder.replies.recycledViewPool = viewPool
+        holder.replies?.recycledViewPool = viewPool
 
-        if (item.descendants.isNotEmpty()) {
-            holder.replies.layoutManager = LinearLayoutManager(holder.itemView.context)
-//            holder.replies.adapter = RepliesAdapter()
+        if (item.hasReplies) {
+            holder.replies?.layoutManager = LinearLayoutManager(holder.itemView.context)
+//            holder.replies?.adapter = RepliesAdapter()
         }
 
     }
@@ -49,7 +50,7 @@ internal class CommentsAdapter(private val items: List<Item>) : RecyclerView.Ada
             get() = itemView.findViewById(R.id.title)
         val subtitle: TextView
             get() = itemView.findViewById(R.id.subtitle)
-        val replies: RecyclerView
+        val replies: RecyclerView?
             get() = itemView.findViewById(R.id.replies)
     }
 }

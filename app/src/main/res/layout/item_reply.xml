@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:="@dimen/padding_sm">
+    android:minHeight="48dp"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_sm">
+
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="A Comment" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/replies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>
