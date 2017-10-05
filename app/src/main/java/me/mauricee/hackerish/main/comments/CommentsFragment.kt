@@ -12,17 +12,25 @@ import android.view.ViewGroup
 import me.mauricee.hackerish.HackerishFragment
 import me.mauricee.hackerish.R
 import me.mauricee.hackerish.domain.hackerNews.Item
+import me.mauricee.hackerish.model.Comment
 
 internal class CommentsFragment : HackerishFragment<CommentsViewModel>() {
 
     companion object {
         val KEY = "${CommentsFragment::class.java.simpleName}.selectedItem"
+
+        fun newInstance(storyId: Int): CommentsFragment {
+            val bundle = Bundle()
+            bundle.putInt(KEY, storyId)
+            val fragment = CommentsFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 
     private val storyList: RecyclerView
         get() = view!!.findViewById(R.id.story_list)
 
-    private var selectedItem: Int = -1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,13 +44,11 @@ internal class CommentsFragment : HackerishFragment<CommentsViewModel>() {
 
     override fun onStart() {
         super.onStart()
-        arguments.getInt(KEY, selectedItem)
-        Log.d(javaClass.simpleName, "stared")
-        val stories = mutableListOf<Item>()
+        val stories = mutableListOf<Comment>()
         storyList.layoutManager = LinearLayoutManager(context)
         val adapter = CommentsAdapter(stories)
         storyList.adapter = adapter
-        viewModel.comments(selectedItem)
-                .subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
+        viewModel.comments(arguments.getInt(KEY, -1))
+                .subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) }, { Log.e(javaClass.simpleName, "Failed!", it) })
     }
 }

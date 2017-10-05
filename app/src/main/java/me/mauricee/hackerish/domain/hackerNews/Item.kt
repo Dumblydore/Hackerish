@@ -13,15 +13,19 @@ data class Item(
         @SerializedName("dead") val dead: Boolean,
         @SerializedName("parent") val parent: Int,
         @SerializedName("poll") val poll: Int,
-        @SerializedName("kids") val kids: List<Int>,
+        @SerializedName("kids") val kids: List<Int>?,
         @SerializedName("url") val urlString: String?,
         @SerializedName("score") val score: Int,
         @SerializedName("title") val title: String,
         @SerializedName("parts") val parts: List<Int>,
-        @SerializedName("descendants") val descendants: List<Int>
+        @SerializedName("descendants") val descendants: Int
 ) {
     val url
         get() = if (urlString != null) Uri.parse(urlString) else Uri.EMPTY
+
+    fun hasChildren() : Boolean {
+        return kids?.isNotEmpty() ?: false
+    }
 
     val type: Type
         get() {

@@ -40,8 +40,7 @@ class MainActivity : HackerishActivity(), MainActivityNavigator {
     }
 
     override fun displayItemDetails(item: Item) {
-        selectedItem = item.id
-        controller.pushFragment(CommentsFragment())
+        controller.pushFragment(CommentsFragment.newInstance(item.id))
     }
 
     override fun pop() {
