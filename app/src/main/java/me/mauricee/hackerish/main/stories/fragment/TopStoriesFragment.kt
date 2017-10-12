@@ -34,7 +34,8 @@ internal class TopStoriesFragment : HackerishFragment<StoriesViewModel>() {
         storyList.layoutManager = LinearLayoutManager(context)
         val adapter = StoriesAdapter(stories, picasso)
         storyList.adapter = adapter
-        viewModel.topStories.subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
+        viewModel.topStories
+                .subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
         adapter.selectedItems.subscribe(viewModel::select)
     }
 }

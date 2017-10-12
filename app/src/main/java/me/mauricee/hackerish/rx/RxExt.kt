@@ -1,4 +1,4 @@
-package me.mauricee.hackerish.ext
+package me.mauricee.hackerish.rx
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

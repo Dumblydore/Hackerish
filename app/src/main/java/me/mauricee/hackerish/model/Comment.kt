@@ -4,14 +4,13 @@ import io.reactivex.Observable
 import me.mauricee.hackerish.domain.hackerNews.Item
 
 
-class Comment(private val item: Item, val replies: Observable<Comment>) {
+data class Comment(private val item: Item, val replies: Observable<Comment>) {
 
-    val hasReplies
-        get() = item.kids?.isNotEmpty() ?: false
+    val id = item.id
 
-    val text
-        get() = item.text
+    val hasReplies = item.kids?.isNotEmpty() ?: false
 
-    val author
-        get() = item.by
+    val text = item.text
+
+    val author = item.by
 }

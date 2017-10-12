@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import me.mauricee.hackerish.R
-import me.mauricee.hackerish.domain.hackerNews.Item
 import me.mauricee.hackerish.model.Comment
 
 class RepliesAdapter(private val replies: List<Comment>, private val viewPool: RecyclerView.RecycledViewPool) : RecyclerView.Adapter<RepliesAdapter.ViewHolder>() {

@@ -10,9 +10,9 @@ import javax.inject.Inject
 internal class StoriesViewModel @Inject constructor(private val navigator: MainActivityNavigator,
                                                     hackerNewsManager: HackerNewsManager) : HackerishViewModel() {
 
-    var topStories: Flowable<Story> = hackerNewsManager.topStories()
+    var topStories: Flowable<Story> = hackerNewsManager.topStories().cache()
 
-    val newStories = hackerNewsManager.newStories()
+    val newStories = hackerNewsManager.newStories().cache()!!
 
     fun select(item: Story) = navigator.displayStoryDetails(item)
 

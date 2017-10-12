@@ -6,11 +6,10 @@ import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView
 import com.ncapdevi.fragnav.FragNavController
 import me.mauricee.hackerish.HackerishActivity
 import me.mauricee.hackerish.R
-import me.mauricee.hackerish.ext.put
+import me.mauricee.hackerish.rx.put
 import me.mauricee.hackerish.main.comments.CommentsFragment
 import me.mauricee.hackerish.main.stories.fragment.NewStoriesFragment
 import me.mauricee.hackerish.main.stories.fragment.TopStoriesFragment
-import me.mauricee.hackerish.domain.hackerNews.Item
 import me.mauricee.hackerish.model.Story
 
 class MainActivity : HackerishActivity(), MainActivityNavigator {

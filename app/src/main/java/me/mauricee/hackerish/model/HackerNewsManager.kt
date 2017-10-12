@@ -8,9 +8,11 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.ReplaySubject
 import me.mauricee.hackerish.domain.hackerNews.HackerNewsApi
 import me.mauricee.hackerish.domain.hackerNews.Item
-import me.mauricee.hackerish.util.RxResponseCallback
+import me.mauricee.hackerish.rx.ResponseCallbackObservable
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.jsoup.Jsoup
@@ -43,9 +45,17 @@ class HackerNewsManager @Inject constructor(private val api: HackerNewsApi,
     }
 
     private fun loadComments(kids: List<Int>): Observable<Comment> {
-        return Observable.fromIterable(kids).flatMapSingle(api::getItem)
-                .map { Comment(it, loadComments(it.kids ?: emptyList())) }
+        val replyStream = ReplaySubject.create<Comment>()
+
+        return Observable.fromIterable(kids)
+                .flatMapSingle(api::getItem)
+                .map {
+                    loadComments(it.kids ?: emptyList()).subscribe(replyStream::onNext)
+                    Comment(it, replyStream.observeOn(AndroidSchedulers.mainThread())
+                            .filter { f -> it.kids?.contains(f.id) ?: false })
+                }
                 .subscribeOn(Schedulers.io())
+                .doOnDispose(replyStream::onComplete)
     }
 
     private fun getStory(id: Int): Single<Story> {
@@ -56,7 +66,7 @@ class HackerNewsManager @Inject constructor(private val api: HackerNewsApi,
 
     private fun getIconFromUrl(url: Uri): Single<Uri> {
         return if (url == Uri.EMPTY) Single.just(url) else
-            RxResponseCallback(client.newCall(Request.Builder().url(url.toString()).build()))
+            ResponseCallbackObservable(client.newCall(Request.Builder().url(url.toString()).build()))
                     .observeOn(Schedulers.computation())
                     .subscribeOn(Schedulers.io())
                     .map { it.body()!!.string() }

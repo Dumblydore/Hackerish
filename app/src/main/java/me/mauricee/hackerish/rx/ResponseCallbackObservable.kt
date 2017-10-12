@@ -1,4 +1,4 @@
-package me.mauricee.hackerish.util
+package me.mauricee.hackerish.rx
 
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -8,7 +8,7 @@ import okhttp3.Callback
 import okhttp3.Response
 import java.io.IOException
 
-class RxResponseCallback(private val call: Call) : Observable<Response>() {
+class ResponseCallbackObservable(private val call: Call) : Observable<Response>() {
 
     override fun subscribeActual(observer: Observer<in Response>) {
         val listener = Listener(observer, call)
