@@ -11,12 +11,12 @@ import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import me.mauricee.hackerish.R
-import me.mauricee.hackerish.domain.hackerNews.Item
+import me.mauricee.hackerish.model.Story
 
-internal class StoriesAdapter(private val items: List<Item>, private val picasso: Picasso) : RecyclerView.Adapter<StoriesAdapter.ViewHolder>() {
+internal class StoriesAdapter(private val items: List<Story>, private val picasso: Picasso) : RecyclerView.Adapter<StoriesAdapter.ViewHolder>() {
 
-    private val itemSubject: PublishSubject<Item> = PublishSubject.create()
-    val selectedItems: Observable<Item>
+    private val itemSubject: PublishSubject<Story> = PublishSubject.create()
+    val selectedItems: Observable<Story>
         get() = itemSubject
 
     override fun getItemCount(): Int {
@@ -26,7 +26,7 @@ internal class StoriesAdapter(private val items: List<Item>, private val picasso
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         holder.title.text = item.title
-        holder.subtitle.text = "by ${item.by}"
+        holder.subtitle.text = "by ${item.user}"
 
         picasso.load(item.icon)
                 .error(R.drawable.ic_launcher_background)

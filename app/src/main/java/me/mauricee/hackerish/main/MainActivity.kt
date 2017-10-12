@@ -11,6 +11,7 @@ import me.mauricee.hackerish.main.comments.CommentsFragment
 import me.mauricee.hackerish.main.stories.fragment.NewStoriesFragment
 import me.mauricee.hackerish.main.stories.fragment.TopStoriesFragment
 import me.mauricee.hackerish.domain.hackerNews.Item
+import me.mauricee.hackerish.model.Story
 
 class MainActivity : HackerishActivity(), MainActivityNavigator {
 
@@ -39,7 +40,7 @@ class MainActivity : HackerishActivity(), MainActivityNavigator {
         }
     }
 
-    override fun displayItemDetails(item: Item) {
+    override fun displayStoryDetails(item: Story) {
         controller.pushFragment(CommentsFragment.newInstance(item.id))
     }
 

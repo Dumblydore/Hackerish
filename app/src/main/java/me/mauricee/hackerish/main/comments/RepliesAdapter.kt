@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import me.mauricee.hackerish.R
 import me.mauricee.hackerish.domain.hackerNews.Item
+import me.mauricee.hackerish.model.Comment
 
-class RepliesAdapter(private val replies: List<Item>, private val viewPool: RecyclerView.RecycledViewPool) : RecyclerView.Adapter<RepliesAdapter.ViewHolder>() {
+class RepliesAdapter(private val replies: List<Comment>, private val viewPool: RecyclerView.RecycledViewPool) : RecyclerView.Adapter<RepliesAdapter.ViewHolder>() {
 
 //    private var isExpanded: fa
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = replies[position]
         holder.text.text = item.text
-        holder.replies.visibility = if (item.hasChildren()) View.VISIBLE else View.GONE
+        holder.replies.visibility = if (item.hasReplies) View.VISIBLE else View.GONE
         holder.replies.recycledViewPool = viewPool
     }
 

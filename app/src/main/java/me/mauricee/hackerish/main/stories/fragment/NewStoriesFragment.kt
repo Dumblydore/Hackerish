@@ -13,6 +13,7 @@ import me.mauricee.hackerish.R
 import me.mauricee.hackerish.main.stories.StoriesAdapter
 import me.mauricee.hackerish.main.stories.StoriesViewModel
 import me.mauricee.hackerish.domain.hackerNews.Item
+import me.mauricee.hackerish.model.Story
 
 internal class NewStoriesFragment : HackerishFragment<StoriesViewModel>() {
 
@@ -31,7 +32,7 @@ internal class NewStoriesFragment : HackerishFragment<StoriesViewModel>() {
 
     override fun onStart() {
         super.onStart()
-        val stories = mutableListOf<Item>()
+        val stories = mutableListOf<Story>()
         storyList.layoutManager = LinearLayoutManager(context)
         val adapter = StoriesAdapter(stories, picasso)
         storyList.adapter = adapter
