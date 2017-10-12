@@ -27,6 +27,12 @@ internal class StoriesAdapter(private val items: List<Story>, private val picass
         val item = items[position]
         holder.title.text = item.title
         holder.subtitle.text = "by ${item.user}"
+        holder.host.text = item.url.host
+
+        picasso.load(item.favicon)
+                .error(R.drawable.ic_launcher_background)
+                .fit()
+                .into(holder.favicon)
 
         picasso.load(item.icon)
                 .error(R.drawable.ic_launcher_background)
@@ -49,5 +55,9 @@ internal class StoriesAdapter(private val items: List<Story>, private val picass
             get() = itemView.findViewById(R.id.subtitle)
         val icon: ImageView
             get() = itemView.findViewById(R.id.icon)
+        val host: TextView
+            get() = itemView.findViewById(R.id.host)
+        val favicon: ImageView
+            get() = itemView.findViewById(R.id.favicon)
     }
 }
