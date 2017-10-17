@@ -36,12 +36,13 @@
                 android:layout_marginStart="32dp"
                 tools:text="Website Name" />
 
-            <Button
+            <ImageButton
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center_vertical|end"
                 android:layout_margin="0dp"
-                android:padding="0dp" />
+                android:padding="0dp"
+                android:background="@drawable/ic_menu"/>
         </FrameLayout>
 
         <ImageView
@@ -56,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:textAppearance="?attr/titleTextAppearance"
+            android:textAppearance="@style/TextAppearance.Medium"
             tools:text="Map versus flatMap" />
 
         <TextView
@@ -64,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:textAppearance="?attr/subtitleTextAppearance"
+            android:textAppearance="@style/TextAppearance.Small"
             tools:text="some_guy ¬ 11 Comments ¬ 3 Days ago" />
 
     </LinearLayout>

@@ -13,6 +13,7 @@ import me.mauricee.hackerish.R
 import me.mauricee.hackerish.main.stories.StoriesAdapter
 import me.mauricee.hackerish.main.stories.StoriesViewModel
 import me.mauricee.hackerish.model.Story
+import me.mauricee.hackerish.rx.put
 
 internal class TopStoriesFragment : HackerishFragment<StoriesViewModel>() {
     private val storyList: RecyclerView
@@ -28,14 +29,15 @@ internal class TopStoriesFragment : HackerishFragment<StoriesViewModel>() {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val stories = mutableListOf<Story>()
         storyList.layoutManager = LinearLayoutManager(context)
         val adapter = StoriesAdapter(stories, picasso)
         storyList.adapter = adapter
-        viewModel.topStories
-                .subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
+        viewModel.topStories.subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
+                .put(subscriptions)
         adapter.selectedItems.subscribe(viewModel::select)
+                .put(subscriptions)
     }
 }

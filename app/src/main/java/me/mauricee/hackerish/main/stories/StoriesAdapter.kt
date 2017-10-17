@@ -1,5 +1,6 @@
 package me.mauricee.hackerish.main.stories
 
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils.substring
 import android.view.LayoutInflater
@@ -14,18 +15,20 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import me.mauricee.hackerish.R
 import me.mauricee.hackerish.model.Story
+import me.mauricee.hackerish.widget.CircleTransform
 
 internal class StoriesAdapter(private val items: List<Story>, private val picasso: Picasso) : RecyclerView.Adapter<StoriesAdapter.ViewHolder>() {
 
+    private val builder = TextDrawable.builder()
+    private val circleTransform = CircleTransform()
     private val itemSubject: PublishSubject<StoriesState.Action> = PublishSubject.create()
+
     val selectedItems: Observable<StoriesState.Action>
         get() = itemSubject
-    val builder = TextDrawable.builder()
 
     override fun getItemCount(): Int {
         return items.size
     }
-
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
@@ -35,8 +38,9 @@ internal class StoriesAdapter(private val items: List<Story>, private val picass
 
         picasso.load(item.favicon)
                 .error(builder.buildRound(item.host.substring(0, 1).toUpperCase(),
-                        holder.itemView.context.resources.getColor(R.color.colorPrimary)))
+                        ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)))
                 .fit()
+                .transform(circleTransform)
                 .into(holder.favicon)
 
         picasso.load(item.icon)
