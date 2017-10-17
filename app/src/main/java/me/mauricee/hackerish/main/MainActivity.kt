@@ -9,7 +9,7 @@ import me.mauricee.hackerish.HackerishActivity
 import me.mauricee.hackerish.R
 import me.mauricee.hackerish.rx.put
 import me.mauricee.hackerish.main.comments.CommentsFragment
-import me.mauricee.hackerish.main.stories.fragment.NewStoriesFragment
+import me.mauricee.hackerish.main.stories.StoriesFragment
 import me.mauricee.hackerish.main.stories.fragment.TopStoriesFragment
 import me.mauricee.hackerish.model.Story
 import android.content.Intent
@@ -30,7 +30,9 @@ class MainActivity : HackerishActivity(), MainActivityNavigator {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         controller = FragNavController.Builder(savedInstanceState, supportFragmentManager, R.id.content)
-                .rootFragments(listOf(TopStoriesFragment(), NewStoriesFragment(), NewStoriesFragment()))
+                .rootFragments(listOf(StoriesFragment.newInstance(StoriesFragment.TopStories),
+                        StoriesFragment.newInstance(StoriesFragment.NewStories),
+                        StoriesFragment.newInstance(StoriesFragment.TopStories)))
                 .build()
 
         RxBottomNavigationView.itemSelections(findViewById(R.id.navigation))

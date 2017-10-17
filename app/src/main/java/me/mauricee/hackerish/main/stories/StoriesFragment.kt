@@ -1,4 +1,4 @@
-package me.mauricee.hackerish.main.stories.fragment
+package me.mauricee.hackerish.main.stories
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -8,14 +8,26 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.reactivex.Flowable
 import me.mauricee.hackerish.HackerishFragment
 import me.mauricee.hackerish.R
-import me.mauricee.hackerish.main.stories.StoriesAdapter
-import me.mauricee.hackerish.main.stories.StoriesViewModel
 import me.mauricee.hackerish.model.Story
 import me.mauricee.hackerish.rx.put
 
-internal class NewStoriesFragment : HackerishFragment<StoriesViewModel>() {
+internal class StoriesFragment : HackerishFragment<StoriesViewModel>() {
+
+    companion object {
+        val NewStories = "NEW"
+        val TopStories = "TOP"
+
+        fun newInstance(type: String): StoriesFragment {
+            val fragment = StoriesFragment()
+            val b = Bundle()
+            b.putString("KEY", type)
+            fragment.arguments = b
+            return fragment
+        }
+    }
 
     private val storyList: RecyclerView
         get() = view!!.findViewById(R.id.story_list)
@@ -36,9 +48,16 @@ internal class NewStoriesFragment : HackerishFragment<StoriesViewModel>() {
         storyList.layoutManager = LinearLayoutManager(context)
         val adapter = StoriesAdapter(stories, picasso)
         storyList.adapter = adapter
-        viewModel.newStories.subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
+        getNewsStream().subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
                 .put(subscriptions)
         adapter.selectedItems.subscribe(viewModel::select)
                 .put(subscriptions)
+    }
+
+    private fun getNewsStream(): Flowable<Story> {
+        return when (arguments.getString("KEY")) {
+            NewStories -> viewModel.newStories
+            else -> viewModel.topStories
+        }
     }
 }
