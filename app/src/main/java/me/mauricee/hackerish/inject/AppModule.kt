@@ -8,6 +8,7 @@ import com.jakewharton.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
+import me.mauricee.hackerish.HackerishApp
 import me.mauricee.hackerish.domain.hackerNews.HackerNewsApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -19,9 +20,15 @@ import javax.inject.Singleton
 class AppModule {
 
     @Provides
-    @Singleton
-    fun provideContext(application: Application): Context {
+    fun provideContext(application: HackerishApp): Context {
         return application.applicationContext
+    }
+
+    @Provides
+    @Singleton
+    fun providePicasso(client: OkHttpClient, context: Context): Picasso {
+        return Picasso.Builder(context).downloader(OkHttp3Downloader(client))
+                .build()
     }
 
     @Provides
@@ -52,12 +59,5 @@ class AppModule {
     @Singleton
     fun provideHackerNewsApi(retrofit: Retrofit): HackerNewsApi {
         return retrofit.create(HackerNewsApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun providePicasso(client: OkHttpClient, context: Context): Picasso {
-        return Picasso.Builder(context).downloader(OkHttp3Downloader(client))
-                .build()
     }
 }

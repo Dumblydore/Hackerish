@@ -1,11 +1,13 @@
 package me.mauricee.hackerish.main.stories
 
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils.substring
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.amulyakhare.textdrawable.TextDrawable
 import com.jakewharton.rxbinding2.view.RxView
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
@@ -15,31 +17,37 @@ import me.mauricee.hackerish.model.Story
 
 internal class StoriesAdapter(private val items: List<Story>, private val picasso: Picasso) : RecyclerView.Adapter<StoriesAdapter.ViewHolder>() {
 
-    private val itemSubject: PublishSubject<Story> = PublishSubject.create()
-    val selectedItems: Observable<Story>
+    private val itemSubject: PublishSubject<StoriesState.Action> = PublishSubject.create()
+    val selectedItems: Observable<StoriesState.Action>
         get() = itemSubject
+    val builder = TextDrawable.builder()
 
     override fun getItemCount(): Int {
         return items.size
     }
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         holder.title.text = item.title
         holder.subtitle.text = "by ${item.user}"
-        holder.host.text = item.url.host
+        holder.host.text = item.url.host?.replace("www.", "") ?: ""
 
         picasso.load(item.favicon)
-                .error(R.drawable.ic_launcher_background)
+                .error(builder.buildRound(item.host.substring(0, 1).toUpperCase(),
+                        holder.itemView.context.resources.getColor(R.color.colorPrimary)))
                 .fit()
                 .into(holder.favicon)
 
         picasso.load(item.icon)
                 .error(R.drawable.ic_launcher_background)
                 .fit()
+                .centerCrop()
                 .into(holder.icon)
 
-        RxView.clicks(holder.itemView).subscribe { itemSubject.onNext(item) }
+        Observable.merge(RxView.clicks(holder.itemView).map { false },
+                RxView.clicks(holder.icon).map { true })
+                .subscribe { itemSubject.onNext(StoriesState.Action(item, it)) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

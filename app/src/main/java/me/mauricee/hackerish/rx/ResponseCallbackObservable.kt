@@ -20,7 +20,10 @@ class ResponseCallbackObservable(private val call: Call) : Observable<Response>(
 
     inner class Listener(private val observer: Observer<in Response>, private val call: Call) : MainThreadDisposable(), Callback {
 
+        private var response: Response? = null
+
         override fun onResponse(call: Call, response: Response) {
+            this.response = response
             if (response.isSuccessful) {
                 observer.onNext(response)
                 observer.onComplete()
@@ -34,6 +37,7 @@ class ResponseCallbackObservable(private val call: Call) : Observable<Response>(
 
         override fun onDispose() {
             call.cancel()
+//            response?.close()
         }
 
     }

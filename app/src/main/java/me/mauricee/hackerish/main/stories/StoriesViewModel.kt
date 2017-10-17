@@ -1,5 +1,6 @@
 package me.mauricee.hackerish.main.stories
 
+import android.net.Uri
 import io.reactivex.Flowable
 import me.mauricee.hackerish.HackerishViewModel
 import me.mauricee.hackerish.main.MainActivityNavigator
@@ -14,7 +15,11 @@ internal class StoriesViewModel @Inject constructor(private val navigator: MainA
 
     val newStories = hackerNewsManager.newStories().cache()!!
 
-    fun select(item: Story) = navigator.displayStoryDetails(item)
-
+    fun select(item: StoriesState.Action) {
+        if (item.navigateToPage || item.story.url == Uri.EMPTY)
+            navigator.navigateToUrl(item.story.url)
+        else
+            navigator.displayStoryDetails(item.story)
+    }
 
 }

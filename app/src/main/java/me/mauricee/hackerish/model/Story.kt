@@ -1,11 +1,15 @@
 package me.mauricee.hackerish.model
 
 import android.net.Uri
-import me.mauricee.hackerish.R.id.favicon
 import me.mauricee.hackerish.domain.hackerNews.Item
 import org.jsoup.Jsoup
+import java.util.regex.Pattern
 
 class Story(private val item: Item, html: String?) {
+
+    companion object {
+        private val pattern = Regex("^(\\w+\\.)")
+    }
 
     val favicon: Uri
 
@@ -18,6 +22,16 @@ class Story(private val item: Item, html: String?) {
     val user = item.by
 
     val url = item.url
+
+    val host: String
+        get() {
+            val host = if (url.host.isNullOrEmpty()) "?" else url.host
+            println("Parsing host: $host")
+            return if (host.toCharArray().filter { '.' == it }.count() >= 2)
+                host.replace(pattern, "")
+            else
+                host.toString()
+        }
 
     val comments
         get() = item.kids ?: emptyList()

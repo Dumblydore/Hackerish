@@ -51,7 +51,8 @@ class HackerNewsManager @Inject constructor(private val api: HackerNewsApi,
                 .flatMapSingle(api::getItem)
                 .map {
                     loadComments(it.kids ?: emptyList()).subscribe(replyStream::onNext)
-                    Comment(it, replyStream.observeOn(AndroidSchedulers.mainThread()).filter { f -> it.kids?.contains(f.id) ?: false })
+                    Comment(it, replyStream.observeOn(AndroidSchedulers.mainThread())
+                            .filter { f -> it.kids?.contains(f.id) ?: false })
                 }
                 .subscribeOn(Schedulers.io())
                 .doOnDispose(replyStream::onComplete)

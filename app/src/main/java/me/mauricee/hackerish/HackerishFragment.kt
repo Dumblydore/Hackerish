@@ -10,6 +10,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.disposables.CompositeDisposable
+import okhttp3.OkHttpClient
 import javax.inject.Inject
 
 abstract class HackerishFragment<VM : ViewModel> : Fragment(), HasSupportFragmentInjector {
@@ -18,13 +19,7 @@ abstract class HackerishFragment<VM : ViewModel> : Fragment(), HasSupportFragmen
     @Inject lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
     protected lateinit var viewModel: VM
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    //    @Inject lateinit var picasso: Picasso
-    val picasso: Picasso
-        get() {
-            val p = Picasso.with(activity)
-            p.isLoggingEnabled = true
-            return p
-        }
+    @Inject lateinit var picasso: Picasso
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)

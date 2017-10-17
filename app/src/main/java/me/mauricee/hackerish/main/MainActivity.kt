@@ -1,5 +1,6 @@
 package me.mauricee.hackerish.main
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView
@@ -11,8 +12,16 @@ import me.mauricee.hackerish.main.comments.CommentsFragment
 import me.mauricee.hackerish.main.stories.fragment.NewStoriesFragment
 import me.mauricee.hackerish.main.stories.fragment.TopStoriesFragment
 import me.mauricee.hackerish.model.Story
+import android.content.Intent
+
 
 class MainActivity : HackerishActivity(), MainActivityNavigator {
+    //TODO Make this an internal view
+    override fun navigateToUrl(uri: Uri) {
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = uri
+        startActivity(i)
+    }
 
     internal var selectedItem = -1
     private lateinit var controller: FragNavController
