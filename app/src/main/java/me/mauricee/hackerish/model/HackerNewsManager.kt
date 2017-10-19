@@ -2,13 +2,11 @@ package me.mauricee.hackerish.model
 
 import android.net.Uri
 import android.util.Log
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
-import io.reactivex.Observable
-import io.reactivex.Single
+import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.ReplaySubject
 import me.mauricee.hackerish.domain.hackerNews.HackerNewsApi
 import me.mauricee.hackerish.domain.hackerNews.Item
 import me.mauricee.hackerish.rx.ResponseCallbackObservable
@@ -16,6 +14,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 class HackerNewsManager @Inject constructor(private val api: HackerNewsApi,
@@ -23,19 +22,15 @@ class HackerNewsManager @Inject constructor(private val api: HackerNewsApi,
 
     fun topStories(): Flowable<Story> {
         return api.topStories.flatMapIterable { it }
-                .flatMapSingle(this::getStory)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                .compose(this::prepareStream)
     }
 
     fun newStories(): Flowable<Story> {
         return api.newStories.flatMapIterable { it }
-                .flatMapSingle(this::getStory)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                .compose(this::prepareStream)
     }
 
-    fun comments(id: Int): Flowable<Comment> {
+    fun commentsFor(id: Int): Flowable<Comment> {
         return api.getItem(id)
                 .map(Item::kids)
                 .flatMapObservable(this::loadComments)
@@ -44,8 +39,15 @@ class HackerNewsManager @Inject constructor(private val api: HackerNewsApi,
                 .toFlowable(BackpressureStrategy.LATEST)
     }
 
+    private fun prepareStream(upstream: Flowable<Int>): Flowable<Story> {
+        return upstream.flatMapSingle { getStory(it) }
+                .filter { Story.empty != it }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+    }
+
     private fun loadComments(kids: List<Int>): Observable<Comment> {
-        val replyStream = BehaviorSubject.create<Comment>()
+        val replyStream = ReplaySubject.create<Comment>()
 
         return Observable.fromIterable(kids)
                 .flatMapSingle(api::getItem)
@@ -59,9 +61,8 @@ class HackerNewsManager @Inject constructor(private val api: HackerNewsApi,
     }
 
     private fun getStory(id: Int): Single<Story> {
-        return api.getItem(id).flatMap { item ->
-            getIconFromUrl(item.url).map { Story(item, it) }
-        }
+        return api.getItem(id).flatMap { getIconFromUrl(it.url).map { html -> Story(it, html) } }
+                .onErrorReturnItem(Story.empty)
     }
 
     private fun getIconFromUrl(url: Uri): Single<String> {

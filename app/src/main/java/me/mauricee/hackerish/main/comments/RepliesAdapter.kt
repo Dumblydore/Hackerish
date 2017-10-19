@@ -19,7 +19,7 @@ class RepliesAdapter(private val replies: List<Comment>, private val viewPool: R
         holder.replies.recycledViewPool = viewPool
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_reply, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_comment, parent, false))
 
     override fun getItemCount() = replies.size
 

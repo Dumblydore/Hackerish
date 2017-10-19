@@ -15,11 +15,12 @@ import javax.inject.Inject
 
 abstract class HackerishFragment<VM : ViewModel> : Fragment(), HasSupportFragmentInjector {
 
+    @Inject internal lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+    @Inject internal lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    internal lateinit var viewModel: VM
     internal val subscriptions = CompositeDisposable()
-    @Inject lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
-    protected lateinit var viewModel: VM
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject lateinit var picasso: Picasso
+    internal val picasso = Picasso.with(activity)
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -27,6 +28,10 @@ abstract class HackerishFragment<VM : ViewModel> : Fragment(), HasSupportFragmen
         super.onAttach(context)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        subscriptions.clear()
+    }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return childFragmentInjector

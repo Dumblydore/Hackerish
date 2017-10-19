@@ -9,6 +9,8 @@ class Story(private val item: Item, html: String?) {
 
     companion object {
         private val pattern = Regex("^(\\w+\\.)")
+
+        val empty = Story(Item(-1, true, "", "", -1, "", true, -1, -1, emptyList(), "", -1, "", emptyList(), -1),"")
     }
 
     val favicon: Uri

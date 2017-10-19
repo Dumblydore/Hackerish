@@ -10,7 +10,6 @@ import me.mauricee.hackerish.R
 import me.mauricee.hackerish.rx.put
 import me.mauricee.hackerish.main.comments.CommentsFragment
 import me.mauricee.hackerish.main.stories.StoriesFragment
-import me.mauricee.hackerish.main.stories.fragment.TopStoriesFragment
 import me.mauricee.hackerish.model.Story
 import android.content.Intent
 
