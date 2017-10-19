@@ -36,7 +36,7 @@ internal class CommentsAdapter(private val items: List<Comment>,
         val item = items[position]
         holder.comment.text = item.text
         holder.user.text = item.author
-        holder.commentInfo.text = "${item.score} points"
+        holder.date.text = "Posted on ${item.date}"
 
         RxView.clicks(holder.itemView).subscribe { itemSubject.onNext(item) }
         holder.replies.recycledViewPool = viewPool
@@ -61,8 +61,8 @@ internal class CommentsAdapter(private val items: List<Comment>,
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val user: TextView
             get() = itemView.findViewById(R.id.user)
-        val commentInfo: TextView
-            get() = itemView.findViewById(R.id.comment_info)
+        val date: TextView
+            get() = itemView.findViewById(R.id.date)
         val comment: TextView
             get() = itemView.findViewById(R.id.comment)
         val replies: RecyclerView

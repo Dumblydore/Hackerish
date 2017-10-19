@@ -78,6 +78,9 @@ dependencies {
 //    UI
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 
+//    Util
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

@@ -1,5 +1,6 @@
 package me.mauricee.hackerish
 
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.picasso.Picasso
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
@@ -14,6 +15,7 @@ class HackerishApp : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
         Picasso.setSingletonInstance(picasso)
+        AndroidThreeTen.init(this)
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
