@@ -13,22 +13,31 @@ import io.reactivex.subjects.PublishSubject
 import me.mauricee.hackerish.R
 import me.mauricee.hackerish.model.Comment
 
-internal class CommentsAdapter(private val items: List<Comment>) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
+internal class CommentsAdapter(private val items: List<Comment>,
+                               private val isRootComment: Boolean = true,
+                               private val viewPool: RecyclerView.RecycledViewPool = RecyclerView.RecycledViewPool()) :
+        RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
 
     private val itemSubject: PublishSubject<Comment> = PublishSubject.create()
-    private val viewPool = RecyclerView.RecycledViewPool()
-
-    val selectedItems: Observable<Comment>
-        get() = itemSubject
 
     override fun getItemCount(): Int {
         return items.size
     }
 
+    override fun getItemViewType(position: Int): Int =
+            if (isRootComment) R.layout.item_comment_root else R.layout.item_comment
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
+        return ViewHolder(view)
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.title.text = item.text
-        holder.subtitle.text = "by ${item.author}"
+        holder.comment.text = item.text
+        holder.user.text = item.author
+        holder.commentInfo.text = "${item.score} points"
+
         RxView.clicks(holder.itemView).subscribe { itemSubject.onNext(item) }
         holder.replies.recycledViewPool = viewPool
 
@@ -38,7 +47,8 @@ internal class CommentsAdapter(private val items: List<Comment>) : RecyclerView.
             holder.replies.isNestedScrollingEnabled = false
             val replies = mutableListOf<Comment>()
             holder.replies.layoutManager = LinearLayoutManager(holder.itemView.context)
-            val repliesAdapter = RepliesAdapter(replies, viewPool)
+
+            val repliesAdapter = CommentsAdapter(replies, false, viewPool)
             holder.replies.adapter = repliesAdapter
             item.replies.subscribe {
                 replies.add(it)
@@ -48,17 +58,13 @@ internal class CommentsAdapter(private val items: List<Comment>) : RecyclerView.
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_comment_root, parent, false)
-        return ViewHolder(view)
-    }
-
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title: TextView
-            get() = itemView.findViewById(R.id.title)
-        val subtitle: TextView
-            get() = itemView.findViewById(R.id.subtitle)
+        val user: TextView
+            get() = itemView.findViewById(R.id.user)
+        val commentInfo: TextView
+            get() = itemView.findViewById(R.id.comment_info)
+        val comment: TextView
+            get() = itemView.findViewById(R.id.comment)
         val replies: RecyclerView
             get() = itemView.findViewById(R.id.replies)
     }

@@ -13,4 +13,8 @@ data class Comment(private val item: Item, val replies: Observable<Comment>) {
     val text = item.text
 
     val author = item.by
+
+    val score = item.score
+
+    val isDeleted = item.deleted
 }
