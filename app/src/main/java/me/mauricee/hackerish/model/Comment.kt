@@ -13,6 +13,6 @@ class Comment(item: Item,
 
     val text = item.text
 
-    val hasReplies = item.descendants > 0
+    val hasReplies = item.kids?.isNotEmpty() ?: false
 
 }
