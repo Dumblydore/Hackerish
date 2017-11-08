@@ -54,7 +54,7 @@ internal class StoriesFragment : HackerishFragment<StoriesViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         val stories = mutableListOf<Story>()
         storyList.layoutManager = LinearLayoutManager(context)
-        val adapter = StoriesAdapter(stories, activity)
+        val adapter = StoriesAdapter(stories)
         storyList.adapter = adapter
 
         refresh.isRefreshing = true

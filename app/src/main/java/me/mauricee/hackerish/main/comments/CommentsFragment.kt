@@ -39,11 +39,12 @@ internal class CommentsFragment : HackerishFragment<CommentsViewModel>() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        buildCommentList()
+        val story: Story = arguments.getParcelable(KEY);
+        story_card.story = story
+        buildCommentList(story)
     }
 
-    private fun buildCommentList() {
-        val story: Story = arguments.getParcelable(KEY)
+    private fun buildCommentList(story: Story) {
         val comments = mutableListOf<Comment>()
         story_list.isNestedScrollingEnabled = false
         story_list.layoutManager = LinearLayoutManager(context)
