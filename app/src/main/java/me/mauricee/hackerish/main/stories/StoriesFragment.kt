@@ -13,8 +13,10 @@ import android.view.ViewGroup
 import io.reactivex.Flowable
 import me.mauricee.hackerish.HackerishFragment
 import me.mauricee.hackerish.R
+import me.mauricee.hackerish.common.ImageDownloader
 import me.mauricee.hackerish.model.Story
 import me.mauricee.hackerish.rx.put
+import javax.inject.Inject
 
 internal class StoriesFragment : HackerishFragment<StoriesViewModel>() {
 

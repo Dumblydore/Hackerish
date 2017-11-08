@@ -12,7 +12,7 @@ internal class StoriesViewModel @Inject constructor(private val navigator: MainA
                                                     hackerNewsManager: HackerNewsManager) : HackerishViewModel() {
 
     val topStories: Flowable<Story> = hackerNewsManager.topStories().cache()
-    val newStories: Flowable<Story> = hackerNewsManager.newStories().cache()
+    val newStories: Flowable<Story> = Flowable.empty()//hackerNewsManager.newStories().cache()
 
     fun select(item: StoriesView.Action) {
         if (item.navigateToPage && item.story.url != Uri.EMPTY)

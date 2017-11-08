@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:background="?selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/favicon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        tools:background="@color/cardview_dark_background" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="56dp"
+        android:maxLines="1"
+        android:paddingTop="16dp"
+        android:textSize="16sp"
+        tools:text="Map versus flatMap - Some more text to make this longer" />
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="56dp"
+        android:maxLines="1"
+        android:paddingBottom="16dp"
+        android:textAppearance="@style/TextAppearance.Small"
+        tools:text="some_guy ¬ 11 Comments ¬ 3 Days ago" />
+
+</FrameLayout>

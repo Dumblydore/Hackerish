@@ -50,7 +50,7 @@ class MainActivity : HackerishActivity(), MainActivityNavigator {
     }
 
     override fun displayStoryDetails(item: Story) {
-        controller.pushFragment(CommentsFragment.newInstance(item.id))
+        controller.pushFragment(CommentsFragment.newInstance(item))
     }
 
     override fun pop() {

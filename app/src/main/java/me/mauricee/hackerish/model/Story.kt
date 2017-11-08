@@ -1,29 +1,28 @@
 package me.mauricee.hackerish.model
 
 import android.net.Uri
+import android.os.Parcel
+import android.os.Parcelable
 import me.mauricee.hackerish.domain.hackerNews.Item
 import org.jsoup.Jsoup
-import java.util.regex.Pattern
 
-class Story(private val item: Item, html: String?) {
-
-    companion object {
-        private val pattern = Regex("^(\\w+\\.)")
-
-        val empty = Story(Item(-1, true, "", "", -1, "", true, -1, -1, emptyList(), "", -1, "", emptyList(), -1),"")
-    }
+class Story(item: Item, html: String?) : Post(item), Parcelable {
 
     val favicon: Uri
 
     val icon: Uri
 
-    val id = item.id
-
     val title = item.title
 
     val user = item.by
 
+    val text = item.text ?: ""
+
     val url = item.url
+
+    val comments = item.kids ?: emptyList()
+
+    val hasComments = item.kids?.isNotEmpty() ?: false
 
     val host: String
         get() {
@@ -35,12 +34,8 @@ class Story(private val item: Item, html: String?) {
                 host.toString()
         }
 
-    val comments
-        get() = item.kids ?: emptyList()
 
-    val hasComments
-        get() = item.kids?.isNotEmpty() ?: false
-
+    //TODO clean this up!
     init {
         if (!html.isNullOrEmpty()) {
             val doc = Jsoup.parse(html)
@@ -56,6 +51,56 @@ class Story(private val item: Item, html: String?) {
         } else {
             favicon = Uri.EMPTY
             icon = Uri.EMPTY
+        }
+    }
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeString(favicon.toString())
+        dest.writeString(icon.toString())
+        dest.writeInt(id)
+        dest.writeString(title)
+        dest.writeString(user)
+        dest.writeString(url.toString())
+        dest.writeString(text)
+        dest.writeIntArray(comments.toIntArray())
+    }
+
+    override fun describeContents(): Int {
+        return favicon.hashCode() +
+                icon.hashCode() +
+                id.hashCode() +
+                title.hashCode() +
+                user.hashCode() +
+                url.hashCode() +
+                text.hashCode() +
+                comments.hashCode() +
+                hasComments.hashCode()
+    }
+
+    companion object {
+        private val pattern = Regex("^(\\w+\\.)")
+
+        val empty = Story(Item(-1, true, "", "", -1, "", true, -1, -1, emptyList(), "", -1, "", emptyList(), -1), "")
+
+        val CREATOR = object : Parcelable.Creator<Story> {
+            override fun newArray(size: Int): Array<Story> = newArray(size)
+            override fun createFromParcel(source: Parcel): Story {
+                val favicon = source.readString()
+                val icon = source.readString()
+                val id = source.readInt()
+                val title = source.readString()
+                val user = source.readString()
+                val url = source.readString()
+                val text = source.readString()
+
+                val comments = source.createIntArray()
+                source.readIntArray(comments)
+
+                val item = Item(id, false, "story", user, 0, text,
+                        false, 0, 0, comments.toList(), url,
+                        0, title, emptyList(), comments.size)
+                return Story(item, null)
+            }
         }
     }
 }

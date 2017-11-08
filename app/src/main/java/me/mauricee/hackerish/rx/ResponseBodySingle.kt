@@ -8,9 +8,9 @@ import okhttp3.Callback
 import okhttp3.Response
 import java.io.IOException
 
-class ResponseCallbackObservable(private val call: Call) : Observable<Response>() {
+class ResponseBodySingle(private val call: Call) : Observable<String>() {
 
-    override fun subscribeActual(observer: Observer<in Response>) {
+    override fun subscribeActual(observer: Observer<in String>) {
         val listener = Listener(observer, call)
 
         observer.onSubscribe(listener)
@@ -18,17 +18,16 @@ class ResponseCallbackObservable(private val call: Call) : Observable<Response>(
     }
 
 
-    inner class Listener(private val observer: Observer<in Response>, private val call: Call) : MainThreadDisposable(), Callback {
-
-        private var response: Response? = null
+    inner class Listener(private val observer: Observer<in String>,
+                         private val call: Call) : MainThreadDisposable(), Callback {
 
         override fun onResponse(call: Call, response: Response) {
-            this.response = response
-            if (response.isSuccessful) {
-                observer.onNext(response)
-                observer.onComplete()
-            } else
-                observer.onError(Exception("Http code: ${response.code()}"))
+            response.use {
+                if (it.isSuccessful) {
+                    observer.onNext(it.body()?.string() ?: "")
+                } else
+                    observer.onError(Exception("Http code: ${it.code()}"))
+            }
         }
 
         override fun onFailure(call: Call, e: IOException) {
@@ -37,7 +36,6 @@ class ResponseCallbackObservable(private val call: Call) : Observable<Response>(
 
         override fun onDispose() {
             call.cancel()
-//            response?.close()
         }
 
     }

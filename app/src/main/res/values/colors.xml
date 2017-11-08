@@ -3,4 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorGray">#9E9E9E</color>
+    <array name="commentColors">
+        <item>#03A9F4</item>
+        <item>#4CAF50</item>
+        <item>#9C27B0</item>
+        <item>#FFEB3B</item>
+        <item>#FF9800</item>
+        <item>#F44336</item>
+    </array>
 </resources>

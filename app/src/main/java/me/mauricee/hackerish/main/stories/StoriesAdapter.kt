@@ -15,10 +15,13 @@ import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import me.mauricee.hackerish.R
+import me.mauricee.hackerish.common.ImageDownloader
 import me.mauricee.hackerish.model.Story
 import me.mauricee.hackerish.widget.CircleTransform
 
-internal class StoriesAdapter(private val items: List<Story>, private val context: Context) : RecyclerView.Adapter<StoriesAdapter.ViewHolder>() {
+internal class StoriesAdapter(private val items: List<Story>,
+                              private val context: Context)
+    : RecyclerView.Adapter<StoriesAdapter.ViewHolder>() {
 
     companion object {
         private val hnPattern = Regex("(^(\\w+ )(HN:))")
@@ -26,10 +29,10 @@ internal class StoriesAdapter(private val items: List<Story>, private val contex
         private val circleTransform = CircleTransform()
     }
 
-    private val itemSubject: PublishSubject<StoriesView.Action> = PublishSubject.create()
-
     val selectedItems: Observable<StoriesView.Action>
         get() = itemSubject
+
+    private val itemSubject: PublishSubject<StoriesView.Action> = PublishSubject.create()
 
     override fun getItemCount(): Int {
         return items.size
@@ -43,11 +46,10 @@ internal class StoriesAdapter(private val items: List<Story>, private val contex
         holder.subtitle.text = "by ${item.user}"
 
         if (item.title.contains(hnPattern)) {
-            holder.host.text = hnPattern.find(item.title)?.value?.replace(":", "") ?: ""
+            holder.host?.text = hnPattern.find(item.title)?.value?.replace(":", "") ?: ""
         } else {
-            holder.host.text = item.url.host?.replace("www.", "") ?: ""
+            holder.host?.text = item.url.host?.replace("www.", "") ?: ""
         }
-
 
         Picasso.with(context).load(item.favicon)
                 .error(builder.buildRound(item.host.substring(0, 1).toUpperCase(),
@@ -56,35 +58,37 @@ internal class StoriesAdapter(private val items: List<Story>, private val contex
                 .transform(circleTransform)
                 .into(holder.favicon)
 
+
         if (item.url == Uri.EMPTY) {
-            holder.icon.visibility = View.GONE
-        } else {
-            holder.icon.visibility = View.VISIBLE
+            holder.icon?.visibility = View.GONE
+        } else if (holder.icon != null) {
+            holder.icon?.visibility = View.VISIBLE
             Picasso.with(context).load(item.icon)
                     .error(R.drawable.ic_launcher_background)
                     .fit()
                     .centerCrop()
                     .into(holder.icon)
         }
-        Observable.merge(RxView.clicks(holder.itemView).map { false },
-                RxView.clicks(holder.icon).map { true })
-                .subscribe { itemSubject.onNext(StoriesView.Action(item, it)) }
+        var a = RxView.clicks(holder.itemView).map { false }
+
+        if (holder.icon != null)
+            a = a.mergeWith(RxView.clicks(holder.icon!!).map { true })
+        a.subscribe { itemSubject.onNext(StoriesView.Action(item, it)) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_story_large, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_story_card, parent, false)
         return ViewHolder(view)
     }
-
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView
             get() = itemView.findViewById(R.id.title)
         val subtitle: TextView
             get() = itemView.findViewById(R.id.subtitle)
-        val icon: ImageView
+        val icon: ImageView?
             get() = itemView.findViewById(R.id.icon)
-        val host: TextView
+        val host: TextView?
             get() = itemView.findViewById(R.id.host)
         val favicon: ImageView
             get() = itemView.findViewById(R.id.favicon)

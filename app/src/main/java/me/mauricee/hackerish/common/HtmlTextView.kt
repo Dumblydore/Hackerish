@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.support.v7.widget.AppCompatTextView
 import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
 
 class HtmlTextView : AppCompatTextView {
@@ -21,6 +22,7 @@ class HtmlTextView : AppCompatTextView {
         } else {
             Html.fromHtml(text.toString())
         }
+        movementMethod = LinkMovementMethod.getInstance()
         super.setText(htmlText, type)
     }
 

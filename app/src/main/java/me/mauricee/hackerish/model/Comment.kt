@@ -7,17 +7,12 @@ import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
 
 
-data class Comment(private val item: Item, val replies: Observable<Comment>) {
-
-    val id = item.id
-
-    val hasReplies = item.kids?.isNotEmpty() ?: false
+class Comment(item: Item,
+              val replies: Observable<Comment>,
+              val depth: Int = 0) : Post(item) {
 
     val text = item.text
 
-    val author = item.by
+    val hasReplies = item.descendants > 0
 
-    val date = Instant.ofEpochMilli(item.time)
-
-    val isDeleted = item.deleted
 }

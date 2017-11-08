@@ -1,41 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="48dp"
-    android:orientation="vertical"
-    android:padding="@dimen/padding_sm">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <View
+        android:id="@+id/color"
+        android:layout_width="@dimen/padding_xs"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/comment"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="some_user" />
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="some_user" />
-
-    </LinearLayout>
+        android:paddingEnd="@dimen/padding_sm"
+        android:paddingStart="12dp"
+        android:paddingTop="@dimen/padding_sm"
+        tools:text="some_user posted on 11/20/1994" />
 
     <me.mauricee.hackerish.common.HtmlTextView
         android:id="@+id/comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="A Comment" />
+        android:layout_below="@id/user"
+        android:paddingEnd="@dimen/padding_sm"
+        android:paddingStart="12dp"
+        tools:height="256dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/comment"
+        android:background="@color/colorGray" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/replies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_comment"/>
+        android:layout_below="@id/comment"
+        android:paddingEnd="@dimen/padding_xs"
+        android:paddingStart="@dimen/padding_xs" />
 
-
-</LinearLayout>
+</RelativeLayout>

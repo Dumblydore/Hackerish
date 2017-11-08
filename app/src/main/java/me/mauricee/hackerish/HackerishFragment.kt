@@ -3,7 +3,9 @@ package me.mauricee.hackerish
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
+import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
+import android.widget.Toast
 import com.squareup.picasso.Picasso
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

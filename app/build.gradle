@@ -7,6 +7,9 @@ kapt {
     generateStubs = true
 }
 
+androidExtensions {
+    experimental = true
+}
 android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
@@ -34,7 +37,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.ncapdevi:frag-nav:2.2.2'
+    implementation 'com.ncapdevi:frag-nav:2.2.3'
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:cardview-v7:$support_version"
     implementation "com.android.support:design:$support_version"
@@ -42,15 +45,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     //    Arch Components
-    implementation 'android.arch.lifecycle:extensions:1.0.0-alpha9-1'
+    implementation "android.arch.lifecycle:extensions:$arch_version"
 //    implementation 'android.arch.lifecycle:common-java8:1.0.0-beta2'
 
     //    Will deal with this later.
 //        testImplementation "android.arch.core.core-testing:1.0.0-beta1"
     implementation 'android.arch.paging:runtime:1.0.0-alpha3'
-    implementation 'android.arch.persistence.room:runtime:1.0.0-alpha9-1'
-    implementation 'android.arch.persistence.room:rxjava2:1.0.0-alpha9-1'
-    testImplementation 'android.arch.persistence.room:testing:1.0.0-alpha9-1'
+    implementation "android.arch.persistence.room:runtime:$arch_version"
+    implementation "android.arch.persistence.room:rxjava2:$arch_version"
+    testImplementation "android.arch.persistence.room:testing:$arch_version"
 
     //    Rx
     implementation 'io.reactivex.rxjava2:rxjava:2.1.4'
@@ -87,6 +90,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "android.arch.persistence.room:compiler:1.0.0-alpha9-1"
-    kapt "android.arch.lifecycle:compiler:1.0.0-alpha9-1"
+    kapt "android.arch.persistence.room:compiler:$arch_version"
+    kapt "android.arch.lifecycle:compiler:$arch_version"
 }
