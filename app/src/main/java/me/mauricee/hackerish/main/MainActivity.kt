@@ -33,20 +33,6 @@ class MainActivity : HackerishActivity(), MainActivityNavigator {
                         StoriesFragment.newInstance(StoriesFragment.NewStories),
                         StoriesFragment.newInstance(StoriesFragment.TopStories)))
                 .build()
-
-        RxBottomNavigationView.itemSelections(findViewById(R.id.navigation))
-                .map(this::mapToIndex)
-                .subscribe(controller::switchTab)
-                .put(subscriptions)
-    }
-
-    private fun mapToIndex(item: MenuItem): Int {
-        return when (item.itemId) {
-            R.id.nav_top -> 0
-            R.id.nav_new -> 1
-            R.id.nav_fav -> 2
-            else -> throw RuntimeException("Invalid Menu Item!")
-        }
     }
 
     override fun displayStoryDetails(item: Story) {

@@ -6,11 +6,7 @@ import android.os.Parcelable
 import me.mauricee.hackerish.domain.hackerNews.Item
 import org.jsoup.Jsoup
 
-class Story(item: Item, html: String?) : Post(item), Parcelable {
-
-    val favicon: Uri
-
-    val icon: Uri
+class Story(item: Item, val favicon: Uri = Uri.EMPTY, val icon: Uri = Uri.EMPTY) : Post(item), Parcelable {
 
     val title = item.title
 
@@ -27,7 +23,6 @@ class Story(item: Item, html: String?) : Post(item), Parcelable {
     val host: String
         get() {
             val host = if (url.host.isNullOrEmpty()) "?" else url.host
-            println("Parsing host: $host")
             return if (host.toCharArray().filter { '.' == it }.count() >= 2)
                 host.replace(pattern, "")
             else
@@ -37,21 +32,6 @@ class Story(item: Item, html: String?) : Post(item), Parcelable {
 
     //TODO clean this up!
     init {
-        if (!html.isNullOrEmpty()) {
-            val doc = Jsoup.parse(html)
-            icon = doc.getElementsByTag("meta")
-                    .filter { (it.attr("property").toString()).equals("og:image", true) }
-                    .map { Uri.parse(it.attr("content")) }
-                    .firstOrNull() ?: Uri.EMPTY
-
-            val e = doc.head().select("link[href~=.*\\.(ico|png)]").firstOrNull()
-            val faviconUrl = e?.attr("href") ?: ""
-            favicon = if (faviconUrl.isEmpty()) Uri.EMPTY else Uri.parse(faviconUrl)
-
-        } else {
-            favicon = Uri.EMPTY
-            icon = Uri.EMPTY
-        }
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
@@ -80,7 +60,7 @@ class Story(item: Item, html: String?) : Post(item), Parcelable {
     companion object {
         private val pattern = Regex("^(\\w+\\.)")
 
-        val empty = Story(Item(-1, true, "", "", -1, "", true, -1, -1, emptyList(), "", -1, "", emptyList(), -1), "")
+        val empty = Story(Item(-1, true, "", "", -1, "", true, -1, -1, emptyList(), "", -1, "", emptyList(), -1))
 
         val CREATOR = object : Parcelable.Creator<Story> {
             override fun newArray(size: Int): Array<Story> = newArray(size)
@@ -99,7 +79,7 @@ class Story(item: Item, html: String?) : Post(item), Parcelable {
                 val item = Item(id, false, "story", user, 0, text,
                         false, 0, 0, comments.toList(), url,
                         0, title, emptyList(), comments.size)
-                return Story(item, null)
+                return Story(item)
             }
         }
     }

@@ -60,7 +60,6 @@ internal class StoriesFragment : HackerishFragment<StoriesViewModel>() {
         refresh.isRefreshing = true
         getNewsStream()
                 .doOnComplete { refresh.isRefreshing = false }
-                .doOnNext { Log.d(javaClass.simpleName, "${it.id} - ${it.title}") }
                 .subscribe({ stories.add(it); adapter.notifyItemInserted(stories.size) })
                 .put(subscriptions)
         adapter.selectedItems.subscribe(viewModel::select)

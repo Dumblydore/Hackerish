@@ -29,7 +29,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
                 android:layout_marginStart="32dp"
-                tools:text="Website Name" />
+                tools:text="Website Name"
+                android:clickable="false"
+                android:focusable="false"/>
 
             <ImageButton
                 android:layout_width="24dp"
@@ -37,7 +39,9 @@
                 android:layout_gravity="center_vertical|end"
                 android:layout_margin="0dp"
                 android:background="@drawable/ic_menu"
-                android:padding="0dp" />
+                android:padding="0dp"
+                android:clickable="false"
+                android:focusable="false"/>
         </FrameLayout>
 
         <ImageView
@@ -45,17 +49,22 @@
             android:layout_width="match_parent"
             android:layout_height="152dp"
             android:layout_marginBottom="8dp"
-            android:background="@color/colorPrimary" />
+            android:background="@color/colorGray"
+            tools:background="@drawable/vc_no_image" />
 
         <me.mauricee.hackerish.common.HtmlTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
+            android:clickable="false"
+            android:focusable="false"
             android:textAppearance="@style/TextAppearance.Medium"
             tools:text="Map versus flatMap" />
 
         <TextView
+            android:clickable="false"
+            android:focusable="false"
             android:id="@+id/subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

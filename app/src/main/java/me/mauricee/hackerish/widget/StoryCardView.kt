@@ -46,13 +46,12 @@ class StoryCardView : CardView {
                     .transform(circleTransform)
                     .into(favicon)
 
-
             if (value.url == Uri.EMPTY) {
                 icon?.visibility = View.GONE
             } else if (icon != null) {
                 icon?.visibility = View.VISIBLE
                 Picasso.with(context).load(value.icon)
-                        .error(R.drawable.ic_launcher_background)
+                        .error(R.drawable.ic_no_image)
                         .fit()
                         .centerCrop()
                         .into(icon)
