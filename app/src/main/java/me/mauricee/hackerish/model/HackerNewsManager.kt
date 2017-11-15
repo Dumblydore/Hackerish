@@ -1,14 +1,13 @@
 package me.mauricee.hackerish.model
 
 import android.net.Uri
-import android.util.Log
-import io.reactivex.*
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.ReplaySubject
-import me.mauricee.hackerish.R.id.favicon
-import me.mauricee.hackerish.common.ImageDownloader
-import me.mauricee.hackerish.common.logTag
 import me.mauricee.hackerish.domain.hackerNews.HackerNewsApi
 import me.mauricee.hackerish.domain.hackerNews.Item
 import okhttp3.OkHttpClient
@@ -19,14 +18,24 @@ import javax.inject.Inject
 class HackerNewsManager @Inject constructor(private val api: HackerNewsApi,
                                             private val client: OkHttpClient) {
 
-    fun topStories(): Flowable<Story> {
-        return api.topStories.flatMapIterable { it }
-                .compose(this::prepareStream)
+    enum class StoryType {
+        Top,
+        New,
+        Best,
+        Ask,
+        Show,
+        Job
     }
 
-    fun newStories(): Flowable<Story> {
-        return api.newStories.flatMapIterable { it }
-                .compose(this::prepareStream)
+    fun stories(type: StoryType): Flowable<Story> {
+        return when (type) {
+            StoryType.Top -> api.topStories
+            StoryType.New -> api.newStories
+            StoryType.Best -> api.bestStories
+            StoryType.Ask -> api.askStories
+            StoryType.Show -> api.showStories
+            StoryType.Job -> api.jobStories
+        }.flatMapIterable { it }.compose(this::prepareStream)
     }
 
     fun commentsFor(id: Int): Flowable<Comment> {

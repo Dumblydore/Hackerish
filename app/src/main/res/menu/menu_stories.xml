@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/stories.action.filter"
+        android:icon="@drawable/ic_filter"
+        android:title="@string/stories.action.filter"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/stories.action.filter.top"
+                android:title="@string/stories.action.filter.top" />
+
+            <item
+                android:id="@+id/stories.action.filter.new"
+                android:title="@string/stories.action.filter.new" />
+
+            <item
+                android:id="@+id/stories.action.filter.best"
+                android:title="@string/stories.action.filter.best" />
+
+            <item
+                android:id="@+id/stories.action.filter.ask"
+                android:title="@string/stories.action.filter.ask" />
+            <item
+                android:id="@+id/stories.action.filter.show"
+                android:title="@string/stories.action.filter.show" />
+            <item
+                android:id="@+id/stories.action.filter.job"
+                android:title="@string/stories.action.filter.job" />
+        </menu>
+    </item>
+
     <item
         android:id="@+id/stories.action.refresh"
         android:icon="@drawable/ic_refresh"

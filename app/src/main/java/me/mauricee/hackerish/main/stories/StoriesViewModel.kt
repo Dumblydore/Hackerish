@@ -1,13 +1,11 @@
 package me.mauricee.hackerish.main.stories
 
 import android.net.Uri
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import me.mauricee.hackerish.HackerishViewModel
 import me.mauricee.hackerish.main.MainActivityNavigator
 import me.mauricee.hackerish.model.HackerNewsManager
-import me.mauricee.hackerish.model.Story
 import javax.inject.Inject
 
 internal class StoriesViewModel @Inject constructor(private val navigator: MainActivityNavigator,
@@ -16,13 +14,13 @@ internal class StoriesViewModel @Inject constructor(private val navigator: MainA
     private val stateSubject: BehaviorSubject<StoriesView.State> = BehaviorSubject.create()
     val state: Observable<StoriesView.State> = stateSubject
 
-    fun setFilter(filter: StoryFilter) {
-        val stories = hackerNewsManager.topStories().toObservable().cache()
-        stateSubject.onNext(StoriesView.State(filter, stories))
+    init {
+        setFilter(StoryFilter.Top)
     }
 
-    init {
-        setFilter(StoryFilter.Story)
+    fun setFilter(filter: StoryFilter) {
+        val stories = hackerNewsManager.stories(filter.type).toObservable().cache()
+        stateSubject.onNext(StoriesView.State(filter, stories))
     }
 
     fun select(item: StoriesView.Action) {

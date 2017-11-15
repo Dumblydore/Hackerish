@@ -63,15 +63,34 @@ internal class StoriesFragment : HackerishFragment<StoriesViewModel>() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?) {
-        super.onPrepareOptionsMenu(menu)
-
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.stories_action_refresh -> {
                 viewModel.refresh()
+                true
+            }
+            R.id.stories_action_filter_top -> {
+                viewModel.setFilter(StoryFilter.Top)
+                true
+            }
+            R.id.stories_action_filter_new -> {
+                viewModel.setFilter(StoryFilter.New)
+                true
+            }
+            R.id.stories_action_filter_best -> {
+                viewModel.setFilter(StoryFilter.Best)
+                true
+            }
+            R.id.stories_action_filter_ask -> {
+                viewModel.setFilter(StoryFilter.Ask)
+                true
+            }
+            R.id.stories_action_filter_show -> {
+                viewModel.setFilter(StoryFilter.Show)
+                true
+            }
+            R.id.stories_action_filter_job -> {
+                viewModel.setFilter(StoryFilter.Job)
                 true
             }
             else -> false

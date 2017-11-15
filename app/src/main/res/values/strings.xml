@@ -4,8 +4,12 @@
     <string name="stories.action.refresh">Refresh</string>
     <string name="stories.action.sort">Refresh</string>
 
-    <string name="stories.filter.ask">Asks</string>
-    <string name="stories.filter.show">Shows</string>
-    <string name="stories.filter.job">Jobs</string>
-    <string name="stories.filter.story">Stories</string>
+    <string name="stories.action.filter">Filter Posts</string>
+    <string name="stories.action.filter.top">Top Stories</string>
+    <string name="stories.action.filter.new">New Stories</string>
+    <string name="stories.action.filter.best">Best Stories</string>
+
+    <string name="stories.action.filter.ask">Ask</string>
+    <string name="stories.action.filter.show">Show</string>
+    <string name="stories.action.filter.job">Jobs</string>
 </resources>
