@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Hackerish</string>
-    <string name="action_settings">Settings</string>
+    <string name="stories.action_settings">Settings</string>
+    <string name="stories.action.refresh">Refresh</string>
+    <string name="stories.action.sort">Refresh</string>
 
     <string name="stories.filter.ask">Asks</string>
     <string name="stories.filter.show">Shows</string>

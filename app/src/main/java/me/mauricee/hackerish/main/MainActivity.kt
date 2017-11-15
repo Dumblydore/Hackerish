@@ -1,17 +1,14 @@
 package me.mauricee.hackerish.main
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.MenuItem
-import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView
 import com.ncapdevi.fragnav.FragNavController
 import me.mauricee.hackerish.HackerishActivity
 import me.mauricee.hackerish.R
-import me.mauricee.hackerish.rx.put
 import me.mauricee.hackerish.main.comments.CommentsFragment
 import me.mauricee.hackerish.main.stories.StoriesFragment
 import me.mauricee.hackerish.model.Story
-import android.content.Intent
 
 
 class MainActivity : HackerishActivity(), MainActivityNavigator {
