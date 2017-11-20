@@ -31,20 +31,12 @@
         android:layout_below="@id/user"
         android:paddingEnd="@dimen/padding_sm"
         android:paddingStart="12dp"
-        tools:height="256dp" />
+        android:paddingBottom="@dimen/padding_sm"
+        tools:text="this is a testsdfk;fnjksdl;fnjasdkl;fnjasdnfjklafnjasdklnfjklasnfjklasdnfjklasnfjlkasnfjklasdnfjklasnjfklasnjfdklnfjsdklnasdjknfjsdklnjdfasln" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/comment"
         android:background="@color/colorGray" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/replies"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/comment"
-        android:paddingEnd="@dimen/padding_xs"
-        android:paddingStart="@dimen/padding_xs" />
-
 </RelativeLayout>

@@ -49,7 +49,7 @@ internal class CommentsFragment : HackerishFragment<CommentsViewModel>() {
         story_list.isNestedScrollingEnabled = false
         story_list.layoutManager = LinearLayoutManager(context)
         val colors = activity.resources.getIntArray(R.array.commentColors).toList()
-        val adapter = CommentsAdapter(comments, colors)
+        val adapter = CommentsAdapter(comments, colors, activity)
         story_list.adapter = adapter
         viewModel.comments(story.id)
                 .subscribe({ comments.add(it); adapter.notifyItemInserted(comments.size) },

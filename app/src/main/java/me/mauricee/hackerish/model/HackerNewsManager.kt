@@ -7,7 +7,6 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.ReplaySubject
 import me.mauricee.hackerish.domain.hackerNews.HackerNewsApi
 import me.mauricee.hackerish.domain.hackerNews.Item
 import okhttp3.OkHttpClient
@@ -67,18 +66,12 @@ class HackerNewsManager @Inject constructor(private val api: HackerNewsApi,
     }
 
     private fun loadComments(kids: List<Int>, depth: Int = 0): Observable<Comment> {
-        val replyStream = ReplaySubject.create<Comment>()
-
         return Observable.fromIterable(kids)
                 .flatMapSingle(api::getItem)
-                .map {
+                .concatMap {
                     loadComments(it.kids ?: emptyList(), depth + 1)
-                            .subscribe(replyStream::onNext)
-                    Comment(it, replyStream.observeOn(AndroidSchedulers.mainThread())
-                            .filter { f -> it.kids?.contains(f.id) ?: false }, depth)
-                }
-                .subscribeOn(Schedulers.io())
-                .doOnDispose(replyStream::onComplete)
+                            .startWith(Comment(it, depth))
+                }.subscribeOn(Schedulers.io())
     }
 
     private fun getBodyFromUri(url: Uri): Single<String> {
