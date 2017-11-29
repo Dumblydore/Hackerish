@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <me.mauricee.hackerish.widget.StoryCardView
+            android:transitionName="@string/transition.story"
             android:id="@+id/story_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

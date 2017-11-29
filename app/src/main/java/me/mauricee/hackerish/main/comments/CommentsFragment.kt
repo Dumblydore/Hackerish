@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import jp.wasabeef.recyclerview.animators.SlideInRightAnimator
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import kotlinx.android.synthetic.main.fragment_comments.*
 import me.mauricee.hackerish.HackerishFragment
 import me.mauricee.hackerish.R
@@ -39,7 +41,7 @@ internal class CommentsFragment : HackerishFragment<CommentsViewModel>() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val story: Story = arguments.getParcelable(KEY);
+        val story: Story = arguments.getParcelable(KEY)
         story_card.story = story
         buildCommentList(story)
     }
@@ -51,6 +53,7 @@ internal class CommentsFragment : HackerishFragment<CommentsViewModel>() {
         val colors = activity.resources.getIntArray(R.array.commentColors).toList()
         val adapter = CommentsAdapter(comments, colors, activity)
         story_list.adapter = adapter
+        story_list.itemAnimator = SlideInRightAnimator()
         viewModel.comments(story.id)
                 .subscribe({ comments.add(it); adapter.notifyItemInserted(comments.size) },
                         {

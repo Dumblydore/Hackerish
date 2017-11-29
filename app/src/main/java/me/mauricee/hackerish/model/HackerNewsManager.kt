@@ -48,12 +48,13 @@ class HackerNewsManager @Inject constructor(private val api: HackerNewsApi,
 
 
     private fun getStory(id: Int): Single<Story> {
-        return api.getItem(id).flatMap {
-            getBodyFromUri(it.url)
-                    .flatMap { html ->
-                        Single.fromCallable { buildStory(it, html) }
-                                .subscribeOn(Schedulers.computation())
-                    }
+        return api.getItem(id).map {
+            Story(it)
+//                .flatMap { getBodyFromUri(it.url)
+//                    .flatMap { html ->
+//                        Single.fromCallable { buildStory(it, html) }
+//                                .subscribeOn(Schedulers.computation())
+//                    }
         }.onErrorReturnItem(Story.empty)
     }
 
@@ -74,35 +75,26 @@ class HackerNewsManager @Inject constructor(private val api: HackerNewsApi,
                 }.subscribeOn(Schedulers.io())
     }
 
-    private fun getBodyFromUri(url: Uri): Single<String> {
-        return if (url == Uri.EMPTY) Single.just("") else
-            Single.defer {
-                val a = client.newCall(Request.Builder().url(url.toString()).build())
-                val body = a.execute().use {
-                    it.body()?.string() ?: ""
-                }
-                Single.just(body)
-            }.subscribeOn(Schedulers.io()).onErrorReturnItem("")
-    }
+
 
     private fun buildStory(item: Item, html: String?): Story {
-        var favicon: Uri = Uri.EMPTY
-        var icon: Uri = Uri.EMPTY
+//        var favicon: Uri = Uri.EMPTY
+//        var icon: Uri = Uri.EMPTY
+//
+//        if (!html.isNullOrEmpty()) {
+//            val doc = Jsoup.parse(html)
+//            icon = doc.getElementsByTag("meta")
+//                    .filter { (it.attr("property").toString()).equals("og:image", true) }
+//                    .map { Uri.parse(it.attr("content")) }
+//                    .firstOrNull() ?: Uri.EMPTY
+//
+//            val e = doc.head().select("link[href~=.*\\.(ico|png)]").firstOrNull()
+//            val faviconUrl = e?.attr("href") ?: ""
+//            favicon = if (faviconUrl.isEmpty()) Uri.EMPTY else Uri.parse(faviconUrl)
+//
+//        }
 
-        if (!html.isNullOrEmpty()) {
-            val doc = Jsoup.parse(html)
-            icon = doc.getElementsByTag("meta")
-                    .filter { (it.attr("property").toString()).equals("og:image", true) }
-                    .map { Uri.parse(it.attr("content")) }
-                    .firstOrNull() ?: Uri.EMPTY
-
-            val e = doc.head().select("link[href~=.*\\.(ico|png)]").firstOrNull()
-            val faviconUrl = e?.attr("href") ?: ""
-            favicon = if (faviconUrl.isEmpty()) Uri.EMPTY else Uri.parse(faviconUrl)
-
-        }
-
-        return Story(item, favicon, icon)
+        return Story(item)
     }
 
 }

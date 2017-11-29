@@ -10,18 +10,34 @@ import dagger.Module
 import dagger.Provides
 import me.mauricee.hackerish.HackerishApp
 import me.mauricee.hackerish.domain.hackerNews.HackerNewsApi
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import javax.inject.Singleton
 
 @Module
 class AppModule {
 
     @Provides
-    fun provideContext(application: HackerishApp): Context {
-        return application.applicationContext
+    fun provideContext(application: HackerishApp): Context = application.applicationContext
+
+    @Provides
+    @Singleton
+    fun provideCache(context: Context): Cache {
+        val httpCacheDirectory = File(context.cacheDir, "cache")
+        val cacheSize = 10 * 1024 * 1024 // 10 MiB
+        return Cache(httpCacheDirectory, cacheSize.toLong())
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(cache: Cache): OkHttpClient {
+        return OkHttpClient.Builder()
+                .cache(cache)
+                .build()
     }
 
     @Provides
@@ -33,16 +49,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-                .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideGson(): Gson {
-        return GsonBuilder().disableHtmlEscaping().create()
-    }
+    fun provideGson(): Gson = GsonBuilder().disableHtmlEscaping().create()
 
     @Provides
     @Singleton
@@ -57,7 +64,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideHackerNewsApi(retrofit: Retrofit): HackerNewsApi {
-        return retrofit.create(HackerNewsApi::class.java)
-    }
+    fun provideHackerNewsApi(retrofit: Retrofit): HackerNewsApi =
+            retrofit.create(HackerNewsApi::class.java)
 }

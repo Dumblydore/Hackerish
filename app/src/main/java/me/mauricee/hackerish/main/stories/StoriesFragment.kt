@@ -9,11 +9,17 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout
+import io.reactivex.schedulers.Schedulers
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
+import jp.wasabeef.recyclerview.animators.SlideInRightAnimator
 import kotlinx.android.synthetic.main.fragment_main.*
 import me.mauricee.hackerish.HackerishFragment
 import me.mauricee.hackerish.R
 import me.mauricee.hackerish.model.Story
 import me.mauricee.hackerish.rx.put
+import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 internal class StoriesFragment : HackerishFragment<StoriesViewModel>() {
 
@@ -32,6 +38,9 @@ internal class StoriesFragment : HackerishFragment<StoriesViewModel>() {
         }
     }
 
+    @Inject
+    lateinit var client: OkHttpClient
+
     private val refresh: SwipeRefreshLayout
         get() = view!!.findViewById(R.id.container)
 
@@ -39,12 +48,13 @@ internal class StoriesFragment : HackerishFragment<StoriesViewModel>() {
         get() = view!!.findViewById(R.id.story_list)
 
     private val stories = mutableListOf<Story>()
-    private val adapter = StoriesAdapter(stories)
+    private lateinit var adapter: StoriesAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(StoriesViewModel::class.java)
+        adapter = StoriesAdapter(stories, client)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,6 +111,7 @@ internal class StoriesFragment : HackerishFragment<StoriesViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         val a = activity as AppCompatActivity
         a.setSupportActionBar(toolbar)
+        storyList.itemAnimator = SlideInRightAnimator()
         storyList.layoutManager = LinearLayoutManager(context)
         storyList.adapter = adapter
 

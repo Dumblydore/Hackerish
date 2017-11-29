@@ -12,4 +12,6 @@
     <string name="stories.action.filter.ask">Ask</string>
     <string name="stories.action.filter.show">Show</string>
     <string name="stories.action.filter.job">Jobs</string>
+
+    <string name="transition.story">StoryTransition</string>
 </resources>

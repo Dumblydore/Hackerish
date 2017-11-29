@@ -1,12 +1,11 @@
 package me.mauricee.hackerish.model
 
-import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
+import me.mauricee.hackerish.R.id.favicon
 import me.mauricee.hackerish.domain.hackerNews.Item
-import org.jsoup.Jsoup
 
-class Story(item: Item, val favicon: Uri = Uri.EMPTY, val icon: Uri = Uri.EMPTY) : Post(item), Parcelable {
+class Story(item: Item) : Post(item), Parcelable {
 
     val title = item.title
 
@@ -29,14 +28,7 @@ class Story(item: Item, val favicon: Uri = Uri.EMPTY, val icon: Uri = Uri.EMPTY)
                 host.toString()
         }
 
-
-    //TODO clean this up!
-    init {
-    }
-
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(favicon.toString())
-        dest.writeString(icon.toString())
         dest.writeInt(id)
         dest.writeString(title)
         dest.writeString(user)
@@ -47,7 +39,6 @@ class Story(item: Item, val favicon: Uri = Uri.EMPTY, val icon: Uri = Uri.EMPTY)
 
     override fun describeContents(): Int {
         return favicon.hashCode() +
-                icon.hashCode() +
                 id.hashCode() +
                 title.hashCode() +
                 user.hashCode() +
@@ -65,8 +56,6 @@ class Story(item: Item, val favicon: Uri = Uri.EMPTY, val icon: Uri = Uri.EMPTY)
         val CREATOR = object : Parcelable.Creator<Story> {
             override fun newArray(size: Int): Array<Story> = newArray(size)
             override fun createFromParcel(source: Parcel): Story {
-                val favicon = source.readString()
-                val icon = source.readString()
                 val id = source.readInt()
                 val title = source.readString()
                 val user = source.readString()

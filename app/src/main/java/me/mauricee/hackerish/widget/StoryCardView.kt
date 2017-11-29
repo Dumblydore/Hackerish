@@ -23,14 +23,11 @@ class StoryCardView : CardView {
     }
 
     var story: Story? = null
-        get
         set(value) {
             if (value == null)
                 return
 
             title.text = value.title.replace(hnPattern, "")
-
-
             subtitle.text = "by ${value.user}"
 
             if (value.title.contains(hnPattern)) {
@@ -38,24 +35,32 @@ class StoryCardView : CardView {
             } else {
                 host?.text = value.url.host?.replace("www.", "") ?: ""
             }
-
-            Picasso.with(context).load(value.favicon)
-                    .error(builder.buildRound(value.host.substring(0, 1).toUpperCase(),
-                            ContextCompat.getColor(context, R.color.colorPrimary)))
-                    .fit()
-                    .transform(circleTransform)
-                    .into(favicon)
-
             if (value.url == Uri.EMPTY) {
                 icon?.visibility = View.GONE
             } else if (icon != null) {
                 icon?.visibility = View.VISIBLE
-                Picasso.with(context).load(value.icon)
-                        .error(R.drawable.ic_no_image)
-                        .fit()
-                        .centerCrop()
-                        .into(icon)
             }
+        }
+
+    var faviconUri: Uri = Uri.EMPTY
+        set(value) {
+
+            Picasso.with(context).load(value)
+                    .fit()
+                    .error(builder.buildRound(value.host?.substring(0, 1)?.toUpperCase() ?: "?",
+                            ContextCompat.getColor(context, R.color.colorPrimary)))
+                    .transform(circleTransform)
+                    .into(favicon)
+
+        }
+
+    var iconUri: Uri = Uri.EMPTY
+        set(value) {
+            Picasso.with(context).load(value)
+                    .error(R.drawable.ic_no_image)
+                    .fit()
+                    .centerCrop()
+                    .into(icon)
         }
 
     val clicks: Observable<Boolean>
@@ -67,13 +72,16 @@ class StoryCardView : CardView {
             return a
         }
 
-
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
         View.inflate(context, R.layout.view_story_card, this)
+    }
 
+    fun clear() {
+        favicon.setImageResource(0)
+        icon.setImageResource(0)
     }
 }

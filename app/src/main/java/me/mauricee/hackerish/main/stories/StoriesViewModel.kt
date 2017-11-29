@@ -6,10 +6,12 @@ import io.reactivex.subjects.BehaviorSubject
 import me.mauricee.hackerish.HackerishViewModel
 import me.mauricee.hackerish.main.MainActivityNavigator
 import me.mauricee.hackerish.model.HackerNewsManager
+import okhttp3.Cache
 import javax.inject.Inject
 
 internal class StoriesViewModel @Inject constructor(private val navigator: MainActivityNavigator,
-                                                    private val hackerNewsManager: HackerNewsManager) : HackerishViewModel() {
+                                                    private val hackerNewsManager: HackerNewsManager,
+                                                    private val cache: Cache) : HackerishViewModel() {
 
     private val stateSubject: BehaviorSubject<StoriesView.State> = BehaviorSubject.create()
     val state: Observable<StoriesView.State> = stateSubject
@@ -31,6 +33,7 @@ internal class StoriesViewModel @Inject constructor(private val navigator: MainA
     }
 
     fun refresh() {
+        cache.evictAll()
         setFilter(stateSubject.value.filter)
     }
 
